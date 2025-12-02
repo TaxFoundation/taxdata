@@ -130,24 +130,42 @@ def update_econproj(url, baseline, text_args):
         # some variables have a missing value in the multi-index. Use iloc
         # to extract needed variables from them.
         billions = "Billions of dollars"
-        gdp = econ_proj.loc["Output"].loc["Gross Domestic Product (GDP)"].iloc[0]
-        tpy = econ_proj.loc["Income"].loc["Income, Personal"].iloc[0]
-        wages = econ_proj.loc["Income"].loc["Wages and Salaries"].iloc[0]
+        # gdp = econ_proj.loc["Output"].loc["Gross Domestic Product (GDP)"].iloc[0]
+        # tpy = econ_proj.loc["Income"].loc["Income, Personal"].iloc[0]
+        # wages = econ_proj.loc["Income"].loc["Wages and Salaries"].iloc[0]
+
+        gdp = econ_proj.loc["Gross domestic product (GDP)"].loc[billions].iloc[0]
+        tpy = econ_proj.loc["Income, personal"].loc[billions].iloc[0]
+        wages = econ_proj.loc["Wages and salaries"].loc[billions].iloc[0]
+
         var = "Proprietors' income, nonfarm, with IVA & CCAdj"
-        schc = econ_proj.loc["Income"].loc["Nonwage Income"].loc[var].iloc[0]
+        # schc = econ_proj.loc["Income"].loc["Nonwage Income"].loc[var].iloc[0]
+        schc = econ_proj.loc[var].loc[billions].iloc[0]
+
         var = "Proprietors' income, farm, with IVA & CCAdj"
-        schf = econ_proj.loc["Income"].loc["Nonwage Income"].loc[var].iloc[0]
+        # schf = econ_proj.loc["Income"].loc["Nonwage Income"].loc[var].iloc[0]
+        schf = econ_proj.loc[var].loc[billions].iloc[0]
+
         var = "Interest income, personal"
-        ints = econ_proj.loc["Income"].loc["Nonwage Income"].loc[var].iloc[0]
+        # ints = econ_proj.loc["Income"].loc["Nonwage Income"].loc[var].iloc[0]
+        ints = econ_proj.loc[var].loc[billions].iloc[0]
+
         var = "Dividend income, personal"
-        divs = econ_proj.loc["Income"].loc["Nonwage Income"].loc[var].iloc[0]
+        # divs = econ_proj.loc["Income"].loc["Nonwage Income"].loc[var].iloc[0]
+        divs = econ_proj.loc[var].loc[billions].iloc[0]
+
         var = "Income, rental, with CCAdj"
-        rents = econ_proj.loc["Income"].loc["Nonwage Income"].loc[var].iloc[0]
+        # rents = econ_proj.loc["Income"].loc["Nonwage Income"].loc[var].iloc[0]
+        rents = econ_proj.loc[var].loc[billions].iloc[0]
+
         book = (
-            econ_proj.loc["Income"].loc["Profits, Corporate, With IVA & CCAdj"].iloc[0]
+            econ_proj.loc["Profits, corporate, with IVA & CCAdj"].iloc[0]
         )
-        var = "Consumer Price Index, All Urban Consumers (CPI-U)"
-        cpiu = econ_proj.loc["Prices"].loc[var].iloc[0]
+
+        var = "Consumer price index, all urban consumers (CPI-U)"
+        # cpiu = econ_proj.loc["Prices"].loc[var].iloc[0]
+        cpiu = econ_proj.loc[var].loc["1982-84=100"].iloc[0]
+
         var_list = [gdp, tpy, wages, schc, schf, ints, divs, rents, book, cpiu]
         var_names = [
             "GDP",
@@ -189,7 +207,7 @@ def update_econproj(url, baseline, text_args):
         # Extract capital gains data
         cg_proj = pd.read_excel(
             rev_url,
-            sheet_name="6. Capital Gains Realization",
+            sheet_name="6. Capital Gains Realizations",
             skiprows=7,
             header=[0, 1],
         )
@@ -197,7 +215,7 @@ def update_econproj(url, baseline, text_args):
         var = "Capital gains realizationsa"
         # increase the CBO final year to (the last year + 1) for each update.
         # e.g. when the CBO final year from CBO is 2034, make the update as range(2017,2035)
-        cgns = cg_proj[var]["Billions of dollars"].loc[list(range(2017, 2035))]
+        cgns = cg_proj[var]["Billions of dollars"].loc[list(range(2017, 2036))]
         var_list = [cgns]
         var_names = ["CGNS"]
         df = pd.DataFrame(var_list, index=var_names).round(1)
@@ -245,9 +263,6 @@ def update_socsec(url, baseline, text_args):
     latest_yr = 2023
     # latest_yr = max([int(yr) for yr in selector.text.split()]) + 1
     report = f"{latest_yr} Report"
-    if report == text_args["socsec_cur_report"]:
-        print("\tNo new data since last update")
-        return baseline, text_args
 
     socsec_url = f"https://www.ssa.gov/oact/TR/{latest_yr}/VI_C_SRfyproj.html"
     match_txt = "Operations of the OASI Trust Fund, Fiscal Years"
@@ -272,7 +287,7 @@ def update_socsec(url, baseline, text_args):
     factor = pct_change.iloc[-1]
     last_year = int(max(cost_data.columns))
     cbo_last_year = int(max(baseline.columns))
-    for year in range(last_year + 1, cbo_last_year + 1):
+    for year in range(last_year + 1, cbo_last_year + 1 +1):
         cost_data[str(year)] = cost_data[str(year - 1)] * factor
     cost_data = cost_data.round(1)
     # finally update CBO projections
@@ -322,7 +337,7 @@ def update_rets(url, baseline, text_args):
             spreadsheet_url = link
             break
     data = pd.read_excel(spreadsheet_url, sheet_name="1B-BOD", index_col=0, header=2)
-    projections = data.loc["Forms 1040, 1040-SR, and 1040-SP, Total"]
+    projections = data.loc["Forms 1040 and 1040-SR, Total"]
     projections /= 1_000_000  # convert units
     pct_change = projections.pct_change() + 1
     # extrapolate out to final year of other CBO projections
@@ -351,13 +366,13 @@ def update_ucomp(url, baseline, text_args):
     Parameters
     ----------
     url: URL linking to IRS website with projections of federal tax filings
-    baseline: CBO baseline we're updaint
+    baseline: CBO baseline we're updating
     text_args: Dictionary containing the arguments that will be passed to
         the documentation template
     Returns
     -------
     baseline: Updated baseline numbers
-    text_args: Updated dictionary with text aruments to fill in the template
+    text_args: Updated dictionary with text arguments to fill in the template
     """
     print("Updating Unemployment Projections")
     session = HTMLSession()
@@ -383,9 +398,9 @@ def update_ucomp(url, baseline, text_args):
         return baseline, text_args
     data = pd.read_excel(ucomp_url, skiprows=7, index_col=[0, 1, 2], thousands=",")
     try:
-        benefits = data.loc["Budget Authority"].dropna().astype(int) / 1000
+        benefits = data.loc["Total Estimated Outlays"].dropna().astype(int) / 1000
     except KeyError:
-        benefits = data.loc["Budget Authority"].dropna().astype(int) / 1000
+        benefits = data.loc["Total Estimated Outlays"].dropna().astype(int) / 1000
     benefits = benefits.round(1)
     df = pd.DataFrame(benefits).transpose()
     # drop items whose index are not years
@@ -460,6 +475,7 @@ def update_cbo():
     )
 
     baseline, text_args = update_econproj(CBO_URL, baseline, text_args)
+
     baseline, text_args = update_cpim(baseline, text_args)
     baseline, text_args = update_socsec(SOCSEC_URL, baseline, text_args)
     baseline, text_args = update_rets(RETS_URL, baseline, text_args)
