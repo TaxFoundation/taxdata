@@ -5,7 +5,7 @@ import pandas as pd
 
 
 CUR_PATH = os.path.abspath(os.path.dirname(__file__))
-start_year = 2011
+start_year = 2015
 end_year = 2035
 
 
@@ -37,11 +37,11 @@ def adjustment(agi, var, var_name, target, weights, blowup):
 
     # Create DataFrame with the goal distribution for each year
     distribution = pd.DataFrame()
-    for year in range(start_year, 2015):
+    for year in range(start_year, 2023):
         distribution[year] = target[str(year)] / target[str(year)].sum()
-    # Use 2014 distribution for all future years
-    for year in range(2015, end_year + 1):
-        distribution[year] = distribution[2014]
+    # Use 2022 distribution for all future years
+    for year in range(2023, end_year + 1):
+        distribution[year] = distribution[2022]
 
     # Advance variable to 2011 level
     var *= blowup[start_year]
