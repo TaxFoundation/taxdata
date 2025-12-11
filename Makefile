@@ -46,7 +46,7 @@ clean:
 	@find . -name *pyc -exec rm {} \;
 ifeq ($(CSV),x)
 	@echo "The CSV=x option logic is not yet implemented"
-#	@rm -f $(MADE_FILES)
+	@rm -f $(MADE_FILES)
 else
 	@echo "No CSV=x option used so skipping removal of all made files"
 endif
