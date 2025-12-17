@@ -7,7 +7,7 @@ from paramtools.parameters import Parameters
 
 CUR_PATH = Path(__file__).resolve().parent
 DATA_PATH = Path(CUR_PATH, "data")
-PUF_YEAR = 2011
+PUF_YEAR = 2015
 CPS_YEAR = 2013
 # variables we're taking the log of for the imputation regressions
 LOG_VARS = ["tot_inc", "interest", "divs", "E01500"]

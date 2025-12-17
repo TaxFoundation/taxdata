@@ -7,7 +7,7 @@ from pathlib import Path
 CUR_PATH = Path(__file__).resolve().parent
 DATA_PATH = Path(CUR_PATH, "data")
 CPS_YEAR = 2016
-PUF_YEAR = 2011
+PUF_YEAR = 2015
 # variables used in the matching process
 PARTITION_VARS = ["dsi", "mars", "agede", "_depne", "people"]
 REG_VARS = [
