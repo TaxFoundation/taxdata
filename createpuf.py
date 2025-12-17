@@ -94,8 +94,8 @@ print("Creating CPS tax units")
 raw_cps = cps.create(DATA_PATH, exportpkl=True, cps_files=[CPS_YEAR], benefits=False)
 # minor PUF prep
 print("Prepping PUF")
-puf2011 = pd.read_csv(Path(DATA_PATH, "puf2011.csv"))
-raw_puf = puf.preppuf(puf2011, PUF_YEAR)
+puf2015 = pd.read_csv(Path(DATA_PATH, "puf_2015.csv"))
+raw_puf = puf.preppuf(puf2015, PUF_YEAR)
 
 # rename CPS file to match PUF
 print("Prepping CPS")
