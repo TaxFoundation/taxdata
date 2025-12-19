@@ -2,7 +2,7 @@ import pandas as pd
 import os
 
 CUR_PATH = os.path.abspath(os.path.dirname(__file__))
-SYR = 2011  # calendar year used to normalize factors
+SYR = 2015  # calendar year used to normalize factors
 BEN_SYR = 2014  # calendar year used just for the benefit start year
 EYR = 2035  # last calendar year we have data for
 SOI_YR = 2017  # most recently available SOI estimates
@@ -264,7 +264,7 @@ for year in range(2022, EYR + 1):
     prev_value = benefit_sums["{}_cost".format(prev_year)]
     benefit_sums["{}_cost".format(year)] = prev_value * gr
 ABENEFITS = (benefit_sums / benefit_sums["{}_cost".format(BEN_SYR)]).transpose()
-benefit_factors = pd.DataFrame()
+benefit_factors = pd.DataFrame(index=[0])
 for year in range(SYR, EYR + 1):
     if year <= BEN_SYR:
         benefit_factors[year] = [1.0]
@@ -306,10 +306,11 @@ rename = {
 Stage_II_targets.rename(columns=rename, inplace=True)
 
 # Delate 2008 row from Stage_I_factors
-Stage_I_factors = Stage_I_factors.drop([2008, 2009, 2010])
-Stage_II_targets = Stage_II_targets.drop([2008, 2009, 2010])
+Stage_I_factors = Stage_I_factors.drop([2008, 2009, 2010, 2011, 2012, 2013, 2014])
+Stage_II_targets = Stage_II_targets.drop([2008, 2009, 2010, 2011, 2012, 2013, 2014])
 
 # add on benefit factors
+print(benefit_factors)
 Stage_I_factors["ABENEFITS"] = benefit_factors.transpose()[0]
 
 # write Stage_I_factors for final preparation and then use by Tax-Calculator

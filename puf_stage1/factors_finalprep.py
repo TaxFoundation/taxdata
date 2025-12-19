@@ -11,7 +11,7 @@ import os
 CUR_PATH = os.path.abspath(os.path.dirname(__file__))
 first_benefit_year = 2014
 inben_filename = os.path.join(CUR_PATH, "benefit_growth_rates.csv")
-first_data_year = 2011
+first_data_year = 2015
 infac_filename = os.path.join(CUR_PATH, "Stage_I_factors.csv")
 output_filename = os.path.join(CUR_PATH, "growfactors.csv")
 

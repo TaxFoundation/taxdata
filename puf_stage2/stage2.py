@@ -56,7 +56,7 @@ Stage_II_targets = pd.read_csv(stage2_path, index_col=0)
 puf.s006 = puf.matched_weight * 100
 
 # Dataprep
-year_list = [x for x in range(2012, 2035 + 1)]
+year_list = [x for x in range(2016, 2035 + 1)]
 skipped_years = []
 for i in year_list:
     try:
@@ -77,7 +77,7 @@ os.system(f"julia --project={env_path} solver.jl")
 
 # Initialize weights dataframe
 z = pd.DataFrame()
-z["WT2011"] = puf.s006
+z["WT2015"] = puf.s006
 
 # write solution to dataframe
 for i in year_list:
