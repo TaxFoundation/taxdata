@@ -98,7 +98,7 @@ Table VI.C4. Operations of the OASI Trust Fund, Table VI.C4, Column:
 
 Previous: [2023 Report](https://www.ssa.gov/oact/TR/2023/VI_C_SRfyproj.html)
 
-Current: [2023 Report](https://www.ssa.gov/oact/TR/2023/VI_C_SRfyproj.html)
+Current: [2024 Report](https://www.ssa.gov/oact/TR/2024/VI_C_SRfyproj.html)
 
 Projections are taken directly from the `Scheduled Benefits: Intermediate Level`
 column of this table.
@@ -124,7 +124,7 @@ Manual Instructions:
 
 Source: [CBO Unemployment Compensation projections](https://www.cbo.gov/about/products/baseline-projections-selected-programs#24)
 
-Previous: [June 2024](https://www.cbo.gov/system/files/2024-06/51316-2024-06-unemployment.xlsx)
+Previous: [January 2025](https://www.cbo.gov/system/files/2025-01/51316-2025-01-unemployment.xlsx)
 
 Current: [January 2025](https://www.cbo.gov/system/files/2025-01/51316-2025-01-unemployment.xlsx)
 
