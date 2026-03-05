@@ -11,7 +11,7 @@ CUR_PATH = Path(__file__).resolve().parent
 STAGE_1_PATH = Path(CUR_PATH, "..", "puf_stage1", "Stage_I_factors.csv")
 STAGE_2_PATH = Path(CUR_PATH, "..", "cps_stage1", "stage_2_targets.csv")
 START_YEAR = 2014
-END_YEAR = 2034
+END_YEAR = 2036
 
 # Read hashes used to see which years can be skipped
 with open(Path(CUR_PATH, "..", "datahashes.json")) as f:
@@ -63,7 +63,9 @@ def main():
     for year in range(START_YEAR, END_YEAR + 1):
         try:
             factor_match = _factors[year].equals(CUR_FACTORS[year])
-            target_match = stage_2_targets[f"{year}"].equals(CUR_TARGETS[f"{year}"])
+            target_match = stage_2_targets[f"{year}"].equals(
+                CUR_TARGETS[f"{year}"]
+            )
             if files_match and factor_match and target_match:
                 print(f"Skipping {year}")
                 skipped_years.append(year)

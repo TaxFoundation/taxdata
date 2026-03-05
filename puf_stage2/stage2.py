@@ -56,7 +56,7 @@ Stage_II_targets = pd.read_csv(stage2_path, index_col=0)
 puf.s006 = puf.matched_weight * 100
 
 # Dataprep
-year_list = [x for x in range(2012, 2034 + 1)]
+year_list = [x for x in range(2012, 2036 + 1)]
 skipped_years = []
 for i in year_list:
     try:
@@ -99,7 +99,11 @@ for i in year_list:
 
 # Write all weights (rounded to nearest integer) to puf_weights.csv file
 z = z.round(0).astype("int64")
-z.to_csv(os.path.join(CUR_PATH, "puf_weights.csv.gz"), index=False, compression="gzip")
+z.to_csv(
+    os.path.join(CUR_PATH, "puf_weights.csv.gz"),
+    index=False,
+    compression="gzip",
+)
 
 # remove all .npz (numpy array) files
 for file in glob.glob("*.npz"):
